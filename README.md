@@ -1,24 +1,39 @@
-# README
+# Group Memberships DB
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+### ERD
+```
+users
+-name
 
-Things you may want to cover:
+groups
+-name
+-admin_id
 
-* Ruby version
+groups_users
+-user_id
+-group_id
 
-* System dependencies
+```
 
-* Configuration
+### GENERATION COMMANDS
 
-* Database creation
+```bash
+rails generate model User name:string
+rails generate model Group name:string admin:references
+rails generate model GroupsUser user:references group:references
+```
 
-* Database initialization
+Main changes are located within:
 
-* How to run the test suite
+* [user.rb](./app/models/user.rb)
+* [group.rb](./app/models/group.rb)
 
-* Services (job queues, cache servers, search engines, etc.)
+These changes allow us to do:
 
-* Deployment instructions
-
-* ...
+```ruby
+g = Group.first
+u = User.first
+g.members << u  # Creates joining record
+puts u.groups  # Will show first group
+puts g.admin  # Shows whichever user is admin for group
+```
